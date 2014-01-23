@@ -1,0 +1,21 @@
+{
+    "name": "katropine/kmapper",
+    "description": "PHP-MySql data layer",
+    "keywords": ["database", "mysql", "dal"],
+    "homepage": "http://github.com/katropine/kmapper",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Krisitan Beres",
+            "email": "kristian@katropine.com",
+            "homepage": "http://www.katropine.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-0": {"Kmapper": "src/"}
+    },
+    "require": {
+        "php": ">=5.3.0"
+    }
+}
