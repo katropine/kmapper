@@ -28,7 +28,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-namespace Katropine\KMapper;
+namespace KMapper;
 
 /**
  * Makes shure that there is only one connection on the same database

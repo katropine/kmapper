@@ -28,7 +28,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-namespace Katropine\KMapper;
+namespace KMapper;
 
 /**
  * MySql Decorator class, Do not call directlly, use MySql::query() or MySql::execute()
