@@ -55,7 +55,7 @@ class KDataObject {
     /**
      * Get Data as Matrix (Asoc. Array, 2D)
      * 
-     * @return array $array[$i]['id'] Data Matrix [on error, return false]
+     * @return array $array[$i]['id'] Data Matrix 
      */
     public function toArray() {
         return $this->_dataArray;
@@ -64,23 +64,15 @@ class KDataObject {
     /**
      * Get Data as Json
      * 
-     * @return string Json.success Json.data [on error, return false] 
+     * @return string Json
      */
     public function toJson() {
-       
-        $data = $this->_dataArray;
-        $rez = (count($data) > 0) ? true : false;
-        $result = array(
-            'success' => $rez,
-            'data' => $data
-        );
-        return json_encode($result);
-        
+        return json_encode($this->_dataArray);
     }
 
     /**
      * 
-     * Will return first row, use for COUNT(), MAX() ..... or single row extraction [on error, return false]
+     * Will return first row, use for COUNT(), MAX() ..... or single row extraction 
      * @return array $array[0]
      */
     public function toSingleRow() {
