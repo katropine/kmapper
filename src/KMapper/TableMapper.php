@@ -170,11 +170,11 @@ class TableMapper {
         }
         if($this->trigger){
             if (count($arrayValues) > 0) {
-                return MySql::execute($sql, $arrayValues, $options);
+                return \KMapper\MySql::execute($sql, $arrayValues, $options);
             }
-            return MySql::execute($sql, $this->arrayParams, $options);
+            return \KMapper\MySql::execute($sql, $this->arrayParams, $options);
         }else{
-            return new MySqlResult(array());
+            return new \KMapper\MySqlResult(array());
         }
     }
 
@@ -689,23 +689,9 @@ class TableMapper {
         }
         return '';
     }
-    
-    /**
-     * DEPRECATED, use setSelect
-     * Override Select *
-     * 
-     * @param array $array ("PRIMARY_KEY AS ID", "Price")
-     * @return TableMapper
-     */
-    public function setFetchFields($array = array()) {
-        $this->fieldsList = $array;
-        return $this;
-    }
+
 
     /**
-     * Override Select *
-     * (append rule)
-     * setFetchFields is DEPRECATED
      * 
      * @param array $array ("PRIMARY_KEY AS ID", "Price")
      * @param boolean $resetBuffer true will clear default value and everride with new (prevent array merge)
@@ -813,7 +799,7 @@ class TableMapper {
      */
     protected function checkIntegrity() {
         if ($this->tableName == null) {
-            throw new Exception('<b>tableName must be set in constructor</b>');
+            throw new \Exception('<b>tableName must be set in constructor</b>');
         }
     }
 
@@ -917,10 +903,10 @@ class TableMapper {
     }
 
     protected function addTablePrefix($sql) {
-        if ($this->tablePrefix != null) {
+        //if ($this->tablePrefix != null) {
             return str_replace("#__", $this->tablePrefix, $sql);
-        }
-        return $sql;
+        //}
+        //return $sql;
     }
 
     /**

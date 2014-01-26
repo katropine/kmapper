@@ -97,7 +97,19 @@ class MySqlDbConnect {
      * @param string $dbSettingsName - db connection name from kdbconfig.php
      */
     public function __construct($dbSettingsName = 'default') {
-        $cf = require '/../app/config/kmapper.php';
+        
+        if(file_exists('app/config/kmapper.php')){
+            $cf = require 'app/config/kmapper.php';
+        }elseif(file_exists ('application/config/kmapper.php')){
+            $cf = require 'application/config/kmapper.php';
+        }elseif(file_exists('config/kmapper.php')){
+            $cf = require 'config/kmapper.php';
+        }elseif(defined('KMAPPER_CONFIG_LOCATION')){
+            $cf = require KMAPPER_CONFIG_LOCATION.'/kmapper.php';
+        }else{
+            throw new \Exception("KMapper could not find kmapper.php config file");
+        }
+        
         $config = $cf[$dbSettingsName];
         try {
             $this->db = new \PDO("mysql:host={$config['host']};dbname={$config['dbname']}", $config['user'], $config['password'], array(\PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));

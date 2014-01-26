@@ -30,12 +30,27 @@
  */
 namespace KMapper;
 
-class MySqlResult {
+class KDataObject {
     
     private $_dataArray;
+    private $numRows;
+    private $numFields;
+    private $lastId;
+    private $response;
+    private $queryTime;
+    private $sql;
+    private $params;
     
-    public function __construct(array $array) {
+    
+    public function __construct($array = array(), $sql = null, $params = null, $numRows = null, $numFields = null, $lastId = null, $response = null, $queryTime = null) {
         $this->_dataArray = $array;
+        $this->numRows = $numRows;
+        $this->numFields = $numFields;
+        $this->lastId = $lastId;
+        $this->response = $response;
+        $this->queryTime = $queryTime;
+        $this->sql = $sql;
+        $this->params = $params;
     }
     /**
      * Get Data as Matrix (Asoc. Array, 2D)
@@ -43,10 +58,7 @@ class MySqlResult {
      * @return array $array[$i]['id'] Data Matrix [on error, return false]
      */
     public function toArray() {
-        if (!$this->error) {
-            return $this->_dataArray;
-        }
-        return false;
+        return $this->_dataArray;
     }
 
     /**
@@ -88,7 +100,7 @@ class MySqlResult {
      */
     public function push($key, $value, $iterator = null) {
         
-        if ($this->numrows > 0) {
+        if ($this->numRows > 0) {
             $i = 0;
             if ($iterator != null) {
                 foreach ($this->_dataArray as $row) {
@@ -239,5 +251,108 @@ class MySqlResult {
             }
             $this->_dataArray = $sorted;
         }
+    }
+    /**
+     *
+     * @return number of rows returned by last query
+     */
+    public function getNumRows() {
+        return $this->numRows;
+    }
+
+    /**
+     *
+     * @return number of fields returned by last query
+     */
+    public function getNumFields() {
+        return $this->numFields;
+    }
+
+    /**
+     *
+     * @return float Execution time of submited query
+     */
+    public function getQueryTime() {
+        return $this->query_time;
+    }
+
+    /**
+     *
+     * @return int Last auto-increment value of table, after insert
+     */
+    public function getLastID() {
+        return $this->lastId;
+    }
+    
+    /**
+     * Simulates the query with replaced plaeholders
+     * For testing purposes ONLY!!
+     * 
+     * @return string
+     */
+    public function getSql() {
+        return self::buildSql($this->sql, $this->params);
+    }
+
+    protected static function buildSql($sqlpart, $params) {
+        $params = array_map(array(__CLASS__, 'filterValue'), $params);
+        $sqlpart = self::expandPlaceholders($sqlpart, $params);
+        return $sqlpart;
+    }
+
+    /**
+     * Was query success
+     * 
+     * @return boolean false if sql faild with error  
+     */
+    public function isSuccess() {
+        return $this->response;
+    }
+    /**
+     * filter
+     * 
+     * @param mixed $value
+     * @return mixed
+     */
+    protected static function filterValue($value) {
+        if (get_magic_quotes_gpc()) {
+            $value = stripslashes($value);
+        }
+        if (is_string($value) && !is_numeric($value)) {
+            $value = trim($value);
+            $value = "'" . $value . "'";
+        }
+        if (is_null($value)) {
+            $value = "null";
+        }
+        return $value;
+    }
+
+    /**
+     * replace placeholders (?) with values from params
+     * 
+     * @param string $sql with placeholders
+     * @param array $params values for placeholders
+     * @return string
+     * @throws Exception if placeholders and values number mismatch
+     */
+    protected static function expandPlaceholders($sql, array $params) {
+        $sql = (string) $sql;
+        $params = array_values($params);
+        $offset = 0;
+        foreach ($params as $p) {
+            if (is_array($p)) {
+                $param = $p[0];
+            } else {
+                $param = $p;
+            }
+            $place = strpos($sql, '?', $offset);
+            if ($place === false) {
+                throw new \Exception('Parameter / Placeholder count mismatch. Not enough placeholders for all parameters.');
+            }
+            $sql = substr_replace($sql, $param, $place, 1);
+            $offset = $place + strlen($param);
+        }
+        return $sql;
     }
 }

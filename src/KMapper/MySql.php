@@ -39,63 +39,48 @@ class MySql {
      * Unprotected, use if no data required from user. See: MySql::execute() method
      * 
      * @param string $sql
-     * @param $options - [resource 'dbo',  bool 'nullAsString', bool 'recordTrackerDisable'] - 0ptional 
+     * @param $options - [resource 'dbo'] - 0ptional 
      * @return MySqlQuery
      */
     public static function query($sql, array $options = array()) {
-        $options['recordTrackerDisable'] = ( isset($options['recordTrackerDisable']) ? $options['recordTrackerDisable'] : false);
-
-        try {
-            if ($sql == '') {
-                throw new \Exception("Not a valid SQL.");
-            }
-            //just in case
-            $options['connection'] = self::extractDbo($options);
-            $MySql = new MySqlQuery($sql, null, $options);
+      
+        if ($sql == '') {
+            throw new \Exception("Not a valid SQL.");
+        }
+        //just in case
+        $options['connection'] = self::extractDbo($options);
+        $MySql = new MySqlQuery($sql, null, $options);
 
 
-            if (!$MySql instanceof MySqlQuery) {
-                throw new \Exception("Faild to create MySqlQuery object.");
-            }
-        } catch (Exception $E) {
-            die($E->__toString());
+        if (!$MySql instanceof MySqlQuery) {
+            throw new \Exception("Faild to create MySqlQuery object.");
         }
 
-        if (!$MySql->getResponse()) {
-            throw new \Exception($MySql->getError());
-        }
-        return $MySql;
+        return $MySql->getResult();
     }
 
     /**
      *
      * @param type $sql = "INSERT INTO table SET field1 = '?', field2 = '?';"
      * @param array $params = ('Val1', 1, 6)
-     * @param array $options - [resource 'dbo',  bool 'nullAsString', bool 'recordTrackerDisable'] - 0ptional 
+     * @param array $options - [resource 'dbo'] - 0ptional 
      * @return MySqlQuery result object
      */
     public static function execute($sql = '', array $params = array(), array $options = array()) {
-        $options['nullAsString'] = ( isset($options['nullAsString']) ? $options['nullAsString'] : false);
-        $options['recordTrackerDisable'] = ( isset($options['recordTrackerDisable']) ? $options['recordTrackerDisable'] : false);
 
         if ($sql == '') {
-             throw new \Exception("Not a valid SQL.");
-         }
-
-         //just in case
-         $options['connection'] = self::extractDbo($options);
-
-         $MySql = new MySqlQuery($sql, $params, $options);
-
-
-         if (!$MySql instanceof MySqlQuery) {
-             throw new \Exception("Faild to create MySqlQuery object.");
-         }
- 
-
-        if (!$MySql->getResponse()) {
-            throw new \Exception($MySql->getError());
+            throw new \Exception("Not a valid SQL.");
         }
+
+        //just in case
+        $options['connection'] = self::extractDbo($options);
+
+        $MySql = new MySqlQuery($sql, $params, $options);
+
+        if (!$MySql instanceof MySqlQuery) {
+            throw new \Exception("Faild to create MySqlQuery object.");
+        }
+
         return $MySql->getResult();
     }
 
