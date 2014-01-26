@@ -46,8 +46,20 @@ Execute first query:
 
 ```php
 $DataObject = \KMapper\MySql::query("SELECT * FROM t1");
-$DataObject = \KMapper\MySql::execute("SELECT * FROM `#__t1` WHERE id = ? AND age = ?", array(array(12,\PDO::PARAM_INT), array(25, \PDO::PARAM_INT)));
-$DataObject = \KMapper\MySql::execute("SELECT * FROM `#__t1` WHERE id = :id AND age = :age", array(array('id' => 12,\PDO::PARAM_INT), array('age' => 25, \PDO::PARAM_INT)));
+$DataObject = \KMapper\MySql::execute(
+    "SELECT * FROM `#__t1` WHERE id = ? AND age = ?", 
+    array(
+        array(12,\PDO::PARAM_INT), 
+        array(25, \PDO::PARAM_INT)
+    )
+);
+$DataObject = \KMapper\MySql::execute(
+    "SELECT * FROM `#__t1` WHERE id = :id AND age = :age", 
+    array(
+        array(':id' => 12,\PDO::PARAM_INT), 
+        array(':age' => 25, \PDO::PARAM_INT)
+    )
+);
 ```
 
 Multiple database connections
@@ -77,7 +89,7 @@ var_dump($UsersDataObject->toArray());
 var_dump($UsersDataObject->toJson());
 ```
 
-Inser & Update
+Insert & Update
 --------------
 
 ```php
@@ -99,7 +111,7 @@ $data = array(
 // UPDATE where id = 22
 $UserMP->save($data);
 ```
-In case "id" is not the name of primary key, key has to be defined:
+In case "id" is not the primary key name, key has to be defined:
 ```php
 $UserMP = new \KMapper\TabelMapper("#__user");
 $UserMP->setPrimaryKeyName('mu_unstandard_id')->save($data);
@@ -141,5 +153,31 @@ try{
     \KMapper\MySql::transactionRollback();
 }  catch (Exception $E){
     \KMapper\MySql::transactionRollback();
+}
+```
+
+Include with Composer
+---------------------
+
+```
+"repositories": [
+    {
+        "type": "package",
+        "package": {
+            "name": "katropine/kmapper",
+            "version": "master",
+            "source": {
+                "url": "https://github.com/katropine/kmapper.git",
+                "type": "git",
+                "reference": "master"
+            },
+            "autoload": {
+                "classmap": ["/"]
+            }
+        }
+    }
+],
+"require": {
+    "katropine/kmapper" : "dev-master"
 }
 ```
