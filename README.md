@@ -61,7 +61,7 @@ $DataObject = \KMapper\MySql::execute(
     )
 );
 ```
-Tabel Prefix:
+Table Prefix:
 ```
 #__ is a placeholder, it will be replaced with the value from 'prefix' in config.
 ```
