@@ -61,6 +61,10 @@ $DataObject = \KMapper\MySql::execute(
     )
 );
 ```
+Tabel Prefix:
+```
+#__ is a placeholder, it will be replaced with the value from 'prefix' in config.
+```
 
 Multiple database connections
 -----------------------------
