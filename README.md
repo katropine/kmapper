@@ -143,7 +143,7 @@ try{
         throw new \Exception("Could not insert");
     }
 
-    if(!\KMapper\MySql::query($sqlHierarchy)->getResponse()){
+    if(!\KMapper\MySql::query($sqlHierarchy)->isSuccess()){
         throw new \Exception("Query error");
     }
 
