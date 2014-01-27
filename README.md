@@ -80,7 +80,7 @@ $UserMP = new \KMapper\TabelMapper("#__user", 'usr');
 
 $UsersDataObject = $UserMP->setSelect(array("usr.first_name", "usr.last_name", "addr.zip"));
                     // table1, joinField1, onTable2, onField2, table1Alias
-                    ->setInnerJoin("#__address", "id_user", "usr", "id", "adr");
+                    ->setInnerJoin("#__address", "id_user", "usr", "id", "addr");
                     ->setWhere("usr.status != ? AND usr.smart = ? AND (addr.zip = ? OR addr.zip = ?)", array('banned', false, '23000', '21000'));
                     ->setOrderBy("usr.name ASC")
                     ->fetchAll();
