@@ -118,7 +118,7 @@ $UserMP->save($data);
 In case "id" is not the primary key name, key has to be defined:
 ```php
 $UserMP = new \KMapper\TabelMapper("#__user");
-$UserMP->setPrimaryKeyName('mu_unstandard_id')->save($data);
+$UserMP->setPrimaryKeyName('my_unstandard_id')->save($data);
 ```
 
 Mutiple UPDATE & INSERT
@@ -160,8 +160,8 @@ try{
 }
 ```
 
-Include with Composer
----------------------
+Install KMapper with Composer
+-----------------------------
 
 ```
 "repositories": [
