@@ -901,12 +901,16 @@ class TableMapper {
             die($E->__toString());
         }
     }
-
+    /**
+     *  @deprecated
+     *  prefix is not responsibility of TableMapper anymore
+     */
     protected function addTablePrefix($sql) {
-        //if ($this->tablePrefix != null) {
+        
+        if ($this->tablePrefix != null) {
             return str_replace("#__", $this->tablePrefix, $sql);
-        //}
-        //return $sql;
+        }
+        return $sql;
     }
 
     /**
