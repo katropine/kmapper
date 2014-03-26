@@ -392,7 +392,7 @@ class TableMapper {
     public function countAll() {
         $this->checkIntegrity();
         $tableName = ($this->tableAlias) ? $this->tableAlias : $this->tableName;
-        $sql = "SELECT COUNT(`{$tableName}`.`{$this->tablePrimaryKeyName}`) AS REZ FROM `{$this->tableName}` {$this->tableAlias} {$this->getJoins()} WHERE {$this->aclWhere} {$this->getWhere()} {$this->gethaving()};";
+        $sql = "SELECT COUNT({$tableName}.`{$this->tablePrimaryKeyName}`) AS REZ FROM `{$this->tableName}` {$this->tableAlias} {$this->getJoins()} WHERE {$this->aclWhere} {$this->getWhere()} {$this->gethaving()};";
         $RezDO = $this->exe($this->addTablePrefix($sql));
         $rez = $RezDO->toSingleRow();
         return $rez['REZ'];
