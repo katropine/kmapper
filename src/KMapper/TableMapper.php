@@ -143,6 +143,15 @@ class TableMapper {
      * @return \KMapper\TableMapper
      */
     public function setFrom($tableName, $tableAlias = null) {
+        return $this->setTable($tableName, $tableAlias);
+    }
+    /**
+     * 
+     * @param string $tableName
+     * @param string $tableAlias
+     * @return \KDB\TableMapper
+     */
+    public function setTable($tableName, $tableAlias = null) {
         $this->tableName = $tableName;
         if ($tableAlias != '') {
             $this->tableAlias = "`" . $tableAlias . "`";
