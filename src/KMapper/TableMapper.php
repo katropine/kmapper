@@ -622,7 +622,10 @@ class TableMapper {
     }
 
     /**
+     * NOT SUPPORTED BY MYSQL
+     * 
      * FULL OUTER JOIN `$table`.`$joinField` ON `$onTable`.`$onField`
+     * 
      * 
      * @param string $table can have alias see $tableAlias
      * @param string $joinField
