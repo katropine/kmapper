@@ -255,7 +255,7 @@ class TableMapper {
     public function exists(array $array) {
         $string = '';
         foreach ($array as $k => $v) {
-            $string .= "AND " . $k . "='{$v}'";
+            $string .= " AND " . $k . "='{$v} '";
         }
         //clone self not to corrupt WHERE clause
         $_this = clone($this);
