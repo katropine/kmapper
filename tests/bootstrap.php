@@ -7,5 +7,9 @@
  * @since Jan 23, 2014
  */
 
-$loader = require __DIR__ . "/../vendor/autoload.php";
-$loader->add('KMapper\\', __DIR__);
+require_once(__DIR__ . "/../src/KMapper/MySql.php");
+require_once(__DIR__ . "/../src/KMapper/MySqlDbConnect.php");
+require_once(__DIR__ . "/../src/KMapper/MySqlWrapper.php");
+require_once(__DIR__ . "/../src/KMapper/KDataObject.php");
+require_once(__DIR__ . "/../src/KMapper/MySqlQuery.php");
+require_once(__DIR__ . "/../src/KMapper/TableMapper.php");

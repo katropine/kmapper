@@ -123,10 +123,10 @@ class TableMapper {
     }
         
     /**
-     * If false the sql will not be executet, but a dummy sql will so it returns a empty MySqlResult object
+     * If false the sql will not be executet, but a dummy sql will so it returns a empty KDataObject object
      *  
      * @param boolean not numeric
-     * @return MySqlResult
+     * @return KDataObject
      */
     public function triggerExecute($trigger = false){
         // set to false on call, just in case
@@ -183,7 +183,7 @@ class TableMapper {
             }
             return \KMapper\MySql::execute($sql, $this->arrayParams, $options);
         }else{
-            return new \KMapper\MySqlResult(array());
+            return new \KMapper\KDataObject(array());
         }
     }
 
@@ -266,7 +266,7 @@ class TableMapper {
     /**
      * Override for more custom approach
      * @param array
-     * @return MySqlResult DataObject 
+     * @return KDataObject DataObject 
      */
     public function save(array $array) {
         if (!is_object($this)) {
@@ -302,9 +302,10 @@ class TableMapper {
         if (!is_object($this)) {
             throw new \Exception("ERROR: Static call to the " . __CLASS__ . "::" . __METHOD__ . ", object expected");
         }
-        $dataObjects = array();
+        $dataObject = '';
         $updete = array();
         $insert = array();
+        $outcome = false;
         foreach ($arrayarray as $row) {
             if (isset($row[$this->tablePrimaryKeyName]) && 0 < (int) $row[$this->tablePrimaryKeyName] && $this->forceInsert == false) {
                 $updete[] = $row;
@@ -312,25 +313,34 @@ class TableMapper {
                 $insert[] = $row;
             }
         }
+        $i = 0;
         if (count($updete) > 0) {
             $SqlOB = $this->buildSaveSql($updete, self::UPDATE);
-            $i = 0;
             foreach ($SqlOB->sql as $sql) {
-                $dataObjects[] = $this->exe($this->addTablePrefix($sql), $SqlOB->values[$i]);
+                $dataObject = $this->exe($this->addTablePrefix($sql), $SqlOB->values[$i]);
                 $i++;
+                if(!$dataObject->isSuccess()){
+                    throw new Exception("Failed to execute: {$sql}");
+                }
+                $outcome = true;
             }
         }
+        $j = 0;
         if (count($insert) > 0) {
             $SqlOB = $this->buildSaveSql($insert, self::INSERT);
-            $i = 0;
             foreach ($SqlOB->sql as $sql) {
-                $dataObjects[] = $this->exe($this->addTablePrefix($sql), $SqlOB->values[$i]);
-                $i++;
+                $dataObject = $this->exe($this->addTablePrefix($sql), $SqlOB->values[$j]);
+                $j++;
+                if(!$dataObject->isSuccess()){
+                    throw new Exception("Failed to execute: {$sql}");
+                }
+                $outcome = true;
             }
         }
-
+        
         $this->forceInsert = false;
-        return $dataObjects;
+        $DO = new \KMapper\KDataObject($array = array(), $sql = null, $params = null, count($arrayarray), $numFields = null, $lastId = null, $outcome, $queryTime = null);
+        return $DO;
     }
 
     /**
@@ -353,7 +363,7 @@ class TableMapper {
      * 
      * @param type $offset
      * @param type $limit
-     * @return MySqlResult
+     * @return KDataObject
      */
     public function fetch($offset, $limit) {
         $this->checkIntegrity();
@@ -364,19 +374,20 @@ class TableMapper {
     /**
      * 
      * @param type $id
-     * @return MySqlResult
+     * @return KDataObject
      */
     public function fetchById($id) {
         $this->checkIntegrity();
         $partial = "{$this->tablePrimaryKeyName} = ?";
-        $sql = "SELECT {$this->getFetchFields()} FROM `{$this->tableName}` {$this->tableAlias} {$this->getJoins()} WHERE {$this->aclWhere} `{$this->tableName}`.{$partial} AND {$this->getWhere()} {$this->getGroupBy()} {$this->gethaving()} LIMIT 1";
+        $tableName = ($this->tableAlias != '')? $this->tableAlias : "`{$this->tableName}`";
+        $sql = "SELECT {$this->getFetchFields()} FROM `{$this->tableName}` {$this->tableAlias} {$this->getJoins()} WHERE {$this->aclWhere} {$tableName}.{$partial} AND {$this->getWhere()} {$this->getGroupBy()} {$this->gethaving()} LIMIT 1";
         $newArray = array_merge(array($id), $this->arrayParams);
         return $this->exe($this->addTablePrefix($sql), $newArray);
     }
 
     /**
      * 
-     * @return MySqlResult
+     * @return KDataObject
      */
     public function fetchAll() {
         $this->checkIntegrity();
@@ -386,7 +397,7 @@ class TableMapper {
 
     /**
      * 
-     * @return MySqlResult
+     * @return KDataObject
      */
     public function fetchOne() {
         $this->checkIntegrity();
@@ -410,7 +421,7 @@ class TableMapper {
     /**
      * 
      * @param array $array array('user_id' => 21, 'username' => 'kriss') or array('user_id' => array(21, \PDO::PARAM_INT), 'username' => array('kriss', \PDO::PARAM_STR))
-     * @return MySqlResult
+     * @return KDataObject
      * @throws \Exception
      */
     public function update(array $array) {
@@ -431,7 +442,7 @@ class TableMapper {
     /**
      * 
      * @param array $array array('user_id' => 21, 'username' => 'kriss') or array('user_id' => array(21, \PDO::PARAM_INT), 'username' => array('kriss', \PDO::PARAM_STR))
-     * @return MySqlResult
+     * @return KDataObject
      */
     public function insert(array $array) {
         $this->checkIntegrity();
@@ -449,7 +460,7 @@ class TableMapper {
      * 
      * Set WHERE
      * $TableMapper->setWhere('id = ?', array(2));
-     * @return MySqlResult DataObject
+     * @return KDataObject DataObject
      */
     public function delete() {
         $this->checkIntegrity();
@@ -465,7 +476,7 @@ class TableMapper {
      * Delete by ID
      * 
      * @param int $id
-     * @return MySqlResult DataObject
+     * @return KDataObject DataObject
      */
     public function deleteById($id) {
         $this->checkIntegrity();
@@ -482,7 +493,7 @@ class TableMapper {
      * @param int $id  id vlue
      * @param int $offset 
      * @param int $limit
-     * @return MySqlResult DataObject 
+     * @return KDataObject DataObject 
      */
     public function fetchByForeignId($idName, $id, $offset = null, $limit = null) {
         $this->checkIntegrity();
@@ -765,7 +776,7 @@ class TableMapper {
 
     /**
      * Will clear the WHERE buffer
-     * @return MySqlResult
+     * @return KDataObject
      */
     public function clearWhere() {
         $this->where = '';
@@ -775,7 +786,7 @@ class TableMapper {
     /**
      * fetchDuplicatesByFieldName
      * @param array array("firstname", "lastname")
-     * @return MySqlResult
+     * @return KDataObject
      */
     public function fetchDuplicatesByFieldName(array $array) {
         $select = implode(', ', $array);
@@ -790,7 +801,7 @@ class TableMapper {
     /**
      * get table columns
      * 
-     * @return MySqlResult
+     * @return KDataObject
      */
     public function getColumns() {
         $sql = "SHOW COLUMNS FROM {$this->tableName}";

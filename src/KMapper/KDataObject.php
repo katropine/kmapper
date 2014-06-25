@@ -78,7 +78,10 @@ class KDataObject {
     public function toSingleRow() {
         
         $data = $this->toArray();
-        return $data[0];
+        if(count($data) > 0){
+            return $data[0];
+        }
+        return null;
 
     }
 
