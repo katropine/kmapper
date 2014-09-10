@@ -135,6 +135,22 @@ $data = array
 $UserMP->batchSave($data);
 ```
 
+WHERE id IN ()
+-----------------------
+
+```php
+
+$roles = array(1,2,5,8);
+// set placeholders
+$inPlaceholders = implode(',', array_fill(0, count($roles), '?'));  
+
+$i = KDB\TableMapper::getInstance()
+    ->setFrom('#__user')
+    ->setWhere("`user_id` = ? AND `group_id` IN ( {$inPlaceholders} )", array_merge(array($user->getId()),$roles))
+    ->countAll();
+
+```
+
 Transactions
 ------------
 ```php
