@@ -67,7 +67,7 @@ class KDataObject {
      * @return string Json
      */
     public function toJson() {
-        return json_encode($this->_dataArray);
+        return json_encode($this->_dataArray, JSON_NUMERIC_CHECK);
     }
 
     /**
