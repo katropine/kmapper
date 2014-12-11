@@ -273,7 +273,7 @@ class TableMapper {
             throw new \Exception("ERROR: Static call to the " . __CLASS__ . "::save, object expected");
         }
         if ($this->exists === false) {
-            if ((isset($array[$this->tablePrimaryKeyName]) || $array[$this->tablePrimaryKeyName] > 0) && $this->forceInsert == false) {
+            if (isset($array[$this->tablePrimaryKeyName]) && $this->forceInsert == false) {
                 $SqlOB = $this->buildSaveSql($array, self::UPDATE);
             } else {
                 $SqlOB = $this->buildSaveSql($array, self::INSERT);
