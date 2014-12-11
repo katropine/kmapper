@@ -281,6 +281,9 @@ class TableMapper {
             $this->forceInsert = false;
 
             return $this->exe($this->addTablePrefix($SqlOB->sql), $SqlOB->values);
+        }else{
+            $SqlOB = new \stdClass();
+            $SqlOB->sql = '';
         }
         return $this->triggerExecute(false)->exe($this->addTablePrefix($SqlOB->sql));
         
