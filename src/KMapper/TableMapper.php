@@ -255,11 +255,12 @@ class TableMapper {
     public function exists(array $array) {
         $string = '';
         foreach ($array as $k => $v) {
-            $string .= " AND " . $k . "='{$v} '";
+            $string .= " AND " . $k . "=? ";
+            $arr[] = $v;
         }
         //clone self not to corrupt WHERE clause
         $_this = clone($this);
-        $_this->setWhere($string);
+        $_this->setWhere($string, $arr);
         return ($_this->countAll() > 0) ? true : false;
     }
 
