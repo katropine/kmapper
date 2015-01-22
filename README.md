@@ -180,23 +180,6 @@ Install KMapper with Composer
 -----------------------------
 
 ```
-"repositories": [
-    {
-        "type": "package",
-        "package": {
-            "name": "katropine/kmapper",
-            "version": "master",
-            "source": {
-                "url": "https://github.com/katropine/kmapper.git",
-                "type": "git",
-                "reference": "master"
-            },
-            "autoload": {
-                "classmap": ["/"]
-            }
-        }
-    }
-],
 "require": {
     "katropine/kmapper" : "dev-master"
 }
