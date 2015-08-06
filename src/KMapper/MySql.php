@@ -138,11 +138,11 @@ class MySql {
     }
 
     private static function extractPdo(array $options = array()) {
-        return (isset($options['connection']) && $options['connection']->getDbo()->getPdo() instanceof \PDO) ? $options['connection']->getDbo()->getPdo() : MySqlDbWrapper::getInstance()->getDbo()->getPdo();
+        return (isset($options['connection']) && $options['connection']->getPdo() instanceof \PDO) ? $options['connection']->getPdo() : MySqlDbWrapper::getInstance()->getDbo()->getPdo();
     }
 
     private static function extractDbo(array $options = array()) {
-        return (isset($options['connection']) && $options['connection']->getDbo() instanceof MySqlDbConnect) ? $options['connection']->getDbo() : MySqlDbWrapper::getInstance()->getDbo();
+        return (isset($options['connection']) && $options['connection'] instanceof MySqlDbConnect) ? $options['connection'] : MySqlDbWrapper::getInstance()->getDbo();
     }
 
 }

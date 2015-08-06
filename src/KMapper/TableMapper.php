@@ -324,7 +324,7 @@ class TableMapper {
                 $dataObject = $this->exe($this->addTablePrefix($sql), $SqlOB->values[$i]);
                 $i++;
                 if(!$dataObject->isSuccess()){
-                    throw new Exception("Failed to execute: {$sql}");
+                    throw new \Exception("Failed to execute: {$sql}");
                 }
                 $outcome = true;
             }
@@ -336,7 +336,7 @@ class TableMapper {
                 $dataObject = $this->exe($this->addTablePrefix($sql), $SqlOB->values[$j]);
                 $j++;
                 if(!$dataObject->isSuccess()){
-                    throw new Exception("Failed to execute: {$sql}");
+                    throw new \Exception("Failed to execute: {$sql}");
                 }
                 $outcome = true;
             }
@@ -841,7 +841,7 @@ class TableMapper {
         $sql = "";
         try {
             if (!$sqlType) {
-                throw new Exception("<b>SQL type is not set</b>");
+                throw new \Exception("<b>SQL type is not set</b>");
             }
             $values = array();
             $SQLPrepared = new \stdClass();
@@ -924,7 +924,7 @@ class TableMapper {
                 }
             }
             return false;
-        } catch (Exception $E) {
+        } catch (\Exception $E) {
             die($E->__toString());
         }
     }
