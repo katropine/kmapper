@@ -70,7 +70,7 @@ Multiple database connections
 -----------------------------
 
 ```php
-$options['connection'] = new  KMapper\MySqlConnect('db1');
+$options['connection'] = new  KMapper\MySqlDbConnect('db1');
 
 $DataObject = \KMapper\MySql::query("SELECT * FROM #__t1", $options);
 $DataObject = \KMapper\MySql::execute("SELECT * FROM #__t1 WHERE id = ?", array(12), $options);
