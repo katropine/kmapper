@@ -869,25 +869,26 @@ class TableMapper {
                     } else {
                         foreach ($params as $row) {
                             $sql = $sqlType . " `" . $this->tableName . "` SET ";
-
+                            $valuesTmp = [];
                             foreach ($row as $key => $val) {
                                 if ($key != $this->tablePrimaryKeyName) {
                                     if ($val === null) {
                                         $sql .= $key . " = ?, ";
-                                        $values[] = null;
+                                        $valuesTmp[] = null;
                                     } else {
                                         $sql .= $key . " = ?, ";
-                                        $values[] = $val;
+                                        $valuesTmp[] = $val;
                                     }
                                 }
                             }
                             $sql = substr($sql, 0, strlen($sql) - 2);
                             $sql .= " WHERE {$this->tablePrimaryKeyName} = ?";
+                            
                             if ($this->getWhere() != " 1 ") {
                                 $sql .= $this->getWhere();
-                                $values = array_merge((array) $values, (array) $this->arrayParams);
+                                $values = array_merge((array) $valuesTmp, (array) $this->arrayParams);
                             }
-                            $values = array_merge((array) $values, (array) $row[$this->tablePrimaryKeyName]);
+                            $values = array_merge((array) $valuesTmp, (array) $row[$this->tablePrimaryKeyName]);
                             $SQLPrepared->sql[] = $sql;
                             $SQLPrepared->values[] = $values;
                         }
