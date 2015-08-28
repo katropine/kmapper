@@ -369,7 +369,7 @@ class TableMapper {
      * @param type $limit
      * @return KDataObject
      */
-    public function fetch($offset, $limit) {
+    public function fetch($offset = 0, $limit = 10) {
         $this->checkIntegrity();
         $sql = "SELECT {$this->getFetchFields()} FROM `{$this->tableName}` {$this->tableAlias} {$this->getJoins()} WHERE {$this->aclWhere} {$this->getWhere()} {$this->getOrderBy()} {$this->getGroupBy()} {$this->gethaving()} LIMIT " . $offset . ", " . $limit;
         return $this->exe($this->addTablePrefix($sql));
@@ -530,7 +530,14 @@ class TableMapper {
             $this->arrayParams = array_merge($this->arrayParams, $arrayParams);
             //$string = self::buildPartial($string, $arrayParams);
         }
-        $this->where .= $string . " ";
+        $string = ltrim($string);
+        if($this->where == ''){
+            $this->where .= $string . " ";
+        }elseif (substr( $string, 0, 2 ) === 'OR ' || substr( $string, 0, 3 ) === 'AND ') {
+            $this->where .= $string . " ";
+        }else{
+            throw new \Exception("Multiple setWhere() called but missing OR/AND near {$this->where}{$string}");
+        }
         return $this;
     }
 
