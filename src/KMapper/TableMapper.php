@@ -361,6 +361,7 @@ class TableMapper {
             throw new \Exception("Boolean expected, " . gettype($force) . " set.");
         }
         $this->forceInsert = $force;
+        return $this;
     }
 
     /**
