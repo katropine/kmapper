@@ -196,14 +196,14 @@ class KDataObject {
 
     /**
      * Recursive
-     *
+     * 
+     * @param array $array payload
      * @param string $key
      * @param string $value
      * @return array 
      */
-    protected function search($key, $value) {
+    protected function search($array, $key, $value) {
         $results = array();
-        $array = $this->_dataArray;
         if (is_array($array)) {
             if (array_key_exists($key, $array)) {
                 if ($array[$key] == $value) {
