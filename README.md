@@ -1,14 +1,14 @@
-KMapper MySql Database Layer
+KMapper - MySql Database Layer
 ================================
 
 KMapper library is a PHP toolkit for accessing and manipulate MySql database. It provides a query builder class called TableMapper. KMapper is a PDO wrapper library.
 Data is returned as associative array. 
 
 
-Usage Instructions
+Instructions
 ================================
-First create a kmapper.php file in your /app/config or /application/config or /config directory with content.
-* For non MVC framework use define kmapper.php config path with define('KMAPPER_CONFIG_LOCATION', '/my/cistom/path')
+First create a `kmapper.php` file in your `/app/config` or `/application/config` or `/config` directory with content.
+* For non MVC framework use define `kmapper.php` config path with `define('KMAPPER_CONFIG_LOCATION', '/my/cistom/path')`
 
 ```php
 return array(
@@ -142,7 +142,7 @@ WHERE id IN ()
 
 $roles = array(1,2,5,8);
 // set placeholders
-$inPlaceholders = implode(',', array_fill(0, count($roles), '?'));  
+$inPlaceholders =\KMapper\MySql::getPlaceholders($roles);
 
 $i = KMapper\TableMapper::getInstance()
     ->setFrom('#__user')
