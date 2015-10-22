@@ -144,5 +144,13 @@ class MySql {
     private static function extractDbo(array $options = array()) {
         return (isset($options['connection']) && $options['connection'] instanceof MySqlDbConnect) ? $options['connection'] : MySqlDbWrapper::getInstance()->getDbo();
     }
-
+    /**
+     * WHERE .. IN ($placeholders)
+     *
+     * @param array $array ['value1', 'value2',...]
+     * @return string 
+     */
+    public static function getPlaceholders($array){
+        return implode(',', array_fill(0, count($array), '?'));
+    }
 }
