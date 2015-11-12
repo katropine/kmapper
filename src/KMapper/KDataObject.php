@@ -176,7 +176,26 @@ class KDataObject {
         }
         return $this->_dataArray = $tmp;
     }
-
+    /**
+     * Will remove the key, for example: data['short_name'] will be removed from the matrix
+     * <p style="red">!important: this will change the Object state </p>
+     * @param mixed $oldKey
+     * @return array dataArray 
+     */
+    public function removeKey($oldKey){
+        $i = 0;
+        foreach ($this->_dataArray as $row) {
+            foreach ($row as $k => $v) {
+                $key = $k;
+                if ($oldKey != $k) {
+                    $arrVals[$key] = $v;
+                }   
+            }
+            $tmp[$i] = $arrVals;
+            $i++;
+        }
+        return $this->_dataArray = $tmp;
+    }
     /**
      * Search the resoult array by KEY and VALUE
      * 
