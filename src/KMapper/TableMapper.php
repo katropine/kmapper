@@ -891,11 +891,11 @@ class TableMapper {
                             }
                             $sql = substr($sql, 0, strlen($sql) - 2);
                             $sql .= " WHERE {$this->tablePrimaryKeyName} = ?";
-                            
+                            // - this is not working, delete?
                             if ($this->getWhere() != " 1 ") {
                                 $sql .= $this->getWhere();
                                 $values = array_merge((array) $valuesTmp, (array) $this->arrayParams);
-                            }
+                            } // -
                             $values = array_merge((array) $valuesTmp, (array) $row[$this->tablePrimaryKeyName]);
                             $SQLPrepared->sql[] = $sql;
                             $SQLPrepared->values[] = $values;

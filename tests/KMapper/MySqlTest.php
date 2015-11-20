@@ -10,6 +10,7 @@ require_once("../bootstrap.php");
 
 use \KMapper\MySql;
 use \KMapper\TableMapper;
+use \KMapper\Tool\Matrix;
 
 class MySqlTest extends PHPUnit_Framework_TestCase{
 
@@ -184,5 +185,4 @@ class MySqlTest extends PHPUnit_Framework_TestCase{
     	$DO = MySql::query("DROP TABLE `test_table_b`");
     	$this->assertEquals(true, $DO->isSuccess());
     }
-
 }

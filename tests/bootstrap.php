@@ -9,7 +9,8 @@
 
 require_once(__DIR__ . "/../src/KMapper/MySql.php");
 require_once(__DIR__ . "/../src/KMapper/MySqlDbConnect.php");
-require_once(__DIR__ . "/../src/KMapper/MySqlWrapper.php");
+require_once(__DIR__ . "/../src/KMapper/MySqlDbWrapper.php");
 require_once(__DIR__ . "/../src/KMapper/KDataObject.php");
 require_once(__DIR__ . "/../src/KMapper/MySqlQuery.php");
 require_once(__DIR__ . "/../src/KMapper/TableMapper.php");
+require_once(__DIR__ . "/../src/KMapper/Tool/Matrix.php");
