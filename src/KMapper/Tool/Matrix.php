@@ -28,6 +28,7 @@ namespace KMapper\Tool;
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+
 class Matrix {
     
     /**
@@ -53,4 +54,51 @@ class Matrix {
         return $diff;
     }
 
+    /**
+     * 
+     * @param array $m1 array([],[])
+     * @param array $m2 array([],[])
+     * @param array $indexName string
+     * @return array
+     */
+    public static function findNew($m1, $m2, $indexName) {
+        $newArray = [];
+        foreach ($m1 as $key => $val) {
+            $newArray[$indexName."-".$val[$indexName]] = $val;
+        }
+
+        $diff = [];
+        foreach ($m2 as $key => $val) {
+            if (!isset($newArray[$indexName."-".$val[$indexName]])) {
+                $diff[] = $val;
+            }
+        }
+        return $diff;
+    }
+
+    /**
+     * 
+     * @param array $m1 array([],[])
+     * @param array $m2 array([],[])
+     * @param array $indexName string
+     * @return array
+     */
+    public static function findChanged($m1, $m2, $indexName) {
+        $newArray = [];
+        foreach ($m1 as $key => $val) {
+            $hash = md5(serialize(json_encode($val, JSON_NUMERIC_CHECK)));
+            $newArray[$indexName."-".$val[$indexName]]['hash'] = $hash;
+        }
+
+        $diff = [];
+        foreach ($m2 as $key => $val) {
+            $hash2 = md5(serialize(json_encode($val, JSON_NUMERIC_CHECK)));
+            if (isset($newArray[$indexName."-".$val[$indexName]]) && $newArray[$indexName."-".$val[$indexName]]['hash'] != $hash2) {
+                $diff[] = $val;
+            }
+        }
+        return $diff;
+    }
+    
+    
 }
