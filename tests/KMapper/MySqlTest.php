@@ -170,6 +170,14 @@ class MySqlTest extends PHPUnit_Framework_TestCase{
         $this->assertEquals('test_32', $row3['name']); 
     }
     
+    public function testMultipleWhere(){
+        $TM3 = new TableMapper('test_table_a');
+        $TM3->setWhere("name=?", array('test_1'));
+        $TM3->setWhere("OR name=?", array('test_1'));
+        $TM3->setWhere("AND id=?", array(2));
+        $row2 = $TM3->fetchAll()->toSingleRow();
+        $this->assertEquals('test_1', $row2['name']); 
+    }    
     
     /**
      * Dump tabel A

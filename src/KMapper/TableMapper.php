@@ -534,7 +534,7 @@ class TableMapper {
         $string = ltrim($string);
         if($this->where == ''){
             $this->where .= $string . " ";
-        }elseif (substr( $string, 0, 2 ) === 'OR ' || substr( $string, 0, 3 ) === 'AND ') {
+        }elseif (substr( $string, 0, 2 ) === 'OR' || substr( $string, 0, 3 ) === 'AND') {
             $this->where .= $string . " ";
         }else{
             throw new \Exception("Multiple setWhere() called but missing OR/AND near {$this->where}{$string}");
