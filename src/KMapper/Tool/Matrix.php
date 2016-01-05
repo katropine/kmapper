@@ -33,8 +33,8 @@ class Matrix {
     
     /**
      * 
-     * @param array $m1 array([],[])
-     * @param array $m2 array([],[])
+     * @param array $m1 hayStack array([],[])
+     * @param array $m2 newData array([],[])
      * @return array
      */
     public static function findDiff($m1, $m2) {
@@ -54,10 +54,11 @@ class Matrix {
         return $diff;
     }
 
+
     /**
      * 
-     * @param array $m1 array([],[])
-     * @param array $m2 array([],[])
+     * @param array $m1 hayStack array([],[])
+     * @param array $m2 newData array([],[])
      * @param array $indexName string
      * @return array
      */
@@ -78,27 +79,36 @@ class Matrix {
 
     /**
      * 
-     * @param array $m1 array([],[])
-     * @param array $m2 array([],[])
-     * @param array $indexName string
+     * @param array $m1 hayStack array([],[]) 
+     * @param array $m2 newData array([],[])
+     * @param string $indexName 
+     * @param array $copyFieldsFromM1ToDiff copy key-value pare from hayStack to newData
      * @return array
      */
-    public static function findChanged($m1, $m2, $indexName) {
+    public static function findChanged($m1, $m2, $indexName, $copyFieldsFromM1ToDiff = []) {
         $newArray = [];
         foreach ($m1 as $key => $val) {
             $hash = md5(serialize(json_encode($val, JSON_NUMERIC_CHECK)));
             $newArray[$indexName."-".$val[$indexName]]['hash'] = $hash;
+            $newArray[$indexName."-".$val[$indexName]]['value'] = $val;
         }
 
         $diff = [];
         foreach ($m2 as $key => $val) {
             $hash2 = md5(serialize(json_encode($val, JSON_NUMERIC_CHECK)));
             if (isset($newArray[$indexName."-".$val[$indexName]]) && $newArray[$indexName."-".$val[$indexName]]['hash'] != $hash2) {
+                if(count($copyFieldsFromM1ToDiff) > 0){
+                    foreach($copyFieldsFromM1ToDiff as $k => $keyName){
+                        $tmp = $newArray[$indexName."-".$val[$indexName]]['value'];
+                        if(array_key_exists($keyName, $tmp)){
+                            $val[$keyName] = $tmp[$keyName];
+                        }
+                    }
+                }
                 $diff[] = $val;
             }
         }
         return $diff;
     }
     
-    
-}
+   
