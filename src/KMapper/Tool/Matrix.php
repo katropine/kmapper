@@ -110,5 +110,4 @@ class Matrix {
         }
         return $diff;
     }
-    
-   
+}
